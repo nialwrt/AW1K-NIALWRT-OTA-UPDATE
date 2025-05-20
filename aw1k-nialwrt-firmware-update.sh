@@ -4,7 +4,7 @@ echo "###########################"
 echo "AW1K NIALWRT FIRMWARE UPDATE"
 echo "###########################"
 echo "1) IMMORTALWRT 24.10.1 FREE"
-echo "2) IMMORTALWRT 24.10.1 PRO"
+echo "2) IMMORTALWRT 24.10.1 PRO (script)"
 echo "3) NEVERMORESSH"
 echo "4) QWRT V1"
 echo "5) QWRT V2"
@@ -22,22 +22,25 @@ case "$CHOICE" in
 esac
 
 echo
-echo "DOWNLOADING FIRMWARE FROM $URL ..."
-wget -q -O /tmp/installer.sh "$URL"
+echo "DOWNLOADING FROM $URL ..."
+wget -q -O /tmp/firmware "$URL"
 if [ $? -ne 0 ]; then
-  echo "ERROR: FAILED TO DOWNLOAD FIRMWARE."
+  echo "ERROR: FAILED TO DOWNLOAD FILE."
   exit 1
 fi
 
-chmod +x /tmp/installer.sh
-
-echo
 printf "READY TO FLASH FIRMWARE. CONTINUE? (Y/N): "
 read CONFIRM
 case "$CONFIRM" in
-  y|Y) 
-    echo "FLASH FIRMWARE ..."
-    /tmp/installer.sh
+  y|Y)
+    if echo "$URL" | grep -qE "\.sh$"; then
+      echo "RUNNING INSTALLER SCRIPT ..."
+      chmod +x /tmp/firmware
+      /tmp/firmware
+    else
+      echo "FLASHING FIRMWARE BIN ..."
+      sysupgrade /tmp/firmware
+    fi
     ;;
   *)
     echo "FLASH CANCELLED."
