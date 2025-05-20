@@ -17,7 +17,7 @@ case "$CHOICE" in
   2) URL="http://abidarwi.sh/nialwrt11052025.sh" ;;
   3) URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/NEVERMORESSH.bin" ;;
   4) URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/QWRT-V1.bin" ;;
-  5) URL="-" ;;
+  5) URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/QWRT-V2.bin" ;;
   *) echo "CANCELLED."; exit 0 ;;
 esac
 
