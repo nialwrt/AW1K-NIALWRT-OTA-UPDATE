@@ -15,7 +15,7 @@ read CHOICE
 case "$CHOICE" in
   1) URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/IMMORTALWRT-24.10.1-FREE.bin" ;;
   2) URL="http://abidarwi.sh/nialwrt11052025.sh" ;;
-  3) URL="-" ;;
+  3) URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/NEVERMORESSH.bin" ;;
   4) URL="-" ;;
   5) URL="-" ;;
   *) echo "CANCELLED."; exit 0 ;;
