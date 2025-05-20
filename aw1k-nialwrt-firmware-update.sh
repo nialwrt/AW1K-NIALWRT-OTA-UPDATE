@@ -1,0 +1,46 @@
+#!/bin/sh
+clear
+echo "###########################"
+echo "AW1K NIALWRT FIRMWARE UPDATE"
+echo "###########################"
+echo "1) IMMORTALWRT 24.10.1 FREE"
+echo "2) IMMORTALWRT 24.10.1 PRO"
+echo "3) NEVERMORESSH"
+echo "4) QWRT V1"
+echo "5) QWRT V2"
+echo "###########################"
+printf "ENTER YOUR CHOICE [1-5]: "
+read CHOICE
+
+case "$CHOICE" in
+  1) URL="-" ;;
+  2) URL="http://abidarwi.sh/nialwrt11052025.sh" ;;
+  3) URL="-" ;;
+  4) URL="-" ;;
+  5) URL="-" ;;
+  *) echo "CANCELLED."; exit 0 ;;
+esac
+
+echo
+echo "DOWNLOADING FIRMWARE FROM $URL ..."
+wget -q -O /tmp/installer.sh "$URL"
+if [ $? -ne 0 ]; then
+  echo "ERROR: FAILED TO DOWNLOAD FIRMWARE."
+  exit 1
+fi
+
+chmod +x /tmp/installer.sh
+
+echo
+printf "READY TO FLASH FIRMWARE. CONTINUE? (Y/N): "
+read CONFIRM
+case "$CONFIRM" in
+  y|Y) 
+    echo "FLASH FIRMWARE ..."
+    /tmp/installer.sh
+    ;;
+  *)
+    echo "FLASH CANCELLED."
+    exit 0
+    ;;
+esac
