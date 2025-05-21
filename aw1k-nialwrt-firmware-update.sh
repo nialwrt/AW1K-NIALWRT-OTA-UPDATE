@@ -32,7 +32,7 @@ read CONFIRM
 case "$CONFIRM" in
   y|Y)
     echo "FLASHING FIRMWARE ..."
-    sysupgrade /tmp/fwfile
+    sysupgrade -n /tmp/fwfile
     ;;
   *)
     echo "FLASH CANCELLED."
