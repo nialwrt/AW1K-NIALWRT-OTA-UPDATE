@@ -1,4 +1,21 @@
 #!/bin/sh
+
+SCRIPT_URL="https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/refs/heads/main/aw1k-nialwrt-firmware-update.sh"
+LOCAL_SCRIPT="/usr/bin/update"
+TMP_SCRIPT="/tmp/update.tmp"
+
+wget -q -O "$TMP_SCRIPT" "$SCRIPT_URL"
+if [ $? -eq 0 ]; then
+  if ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
+    echo "UPDATE FOUND. UPDATING SCRIPT..."
+    cp "$TMP_SCRIPT" "$LOCAL_SCRIPT"
+    chmod +x "$LOCAL_SCRIPT"
+    echo "UPDATED SCRIPT. RESTARTING..."
+    exec "$LOCAL_SCRIPT" "$@"
+    exit 0
+  fi
+fi
+
 clear
 echo "#############################"
 echo "AW1K NIALWRT FIRMWARE UPDATE"
