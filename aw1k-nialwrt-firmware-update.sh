@@ -25,9 +25,8 @@ echo "3) QWRT V1"
 echo "#############################"
 echo "         PREMIUM"
 echo "4) NIALWRT 24.10.1 PRO V1"
-echo "5) NIALWRT 24.10.1 PRO V2"
 echo "#############################"
-printf "ENTER YOUR CHOICE [1-5]: "
+printf "ENTER YOUR CHOICE [1-4]: "
 read CHOICE
 
 URL=""
@@ -38,7 +37,6 @@ case "$CHOICE" in
   2) URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/NEVERMORESSH.bin" ;;
   3) URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/QWRT-V1.bin" ;;
   4) SCRIPT_URL="http://abidarwi.sh/nialwrt11052025.sh" ;;
-  5) SCRIPT_URL="http://abidarwi.sh/nialwrt22052025.sh" ;;
   *) echo "CANCELLED."; exit 0 ;;
 esac
 
