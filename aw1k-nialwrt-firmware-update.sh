@@ -1,11 +1,8 @@
 #!/bin/sh
 
-# ===== CONFIG =====
 SCRIPT_URL_ORIGINAL="https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/refs/heads/main/aw1k-nialwrt-firmware-update.sh"
 LOCAL_SCRIPT="/usr/bin/update"
 TMP_SCRIPT="/tmp/update.tmp"
-MAX_CHOICE=4
-PROMPT_CHOICE="ENTER YOUR CHOICE [1-$MAX_CHOICE]: "
 
 wget -q -O "$TMP_SCRIPT" "$SCRIPT_URL_ORIGINAL"
 if [ $? -eq 0 ] && ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
@@ -29,19 +26,8 @@ echo "#############################"
 echo "         PREMIUM"
 echo "4) NIALWRT 24.10.1 PRO"
 echo "#############################"
-
-printf "%s" "$PROMPT_CHOICE"
+echo "SELECT OPTION: "
 read CHOICE
-
-if ! echo "$CHOICE" | grep -qE '^[0-9]+$'; then
-  echo "INVALID INPUT. PLEASE ENTER A NUMBER."
-  exit 1
-fi
-
-if [ "$CHOICE" -lt 1 ] || [ "$CHOICE" -gt "$MAX_CHOICE" ]; then
-  echo "INVALID INPUT. PLEASE ENTER A NUMBER BETWEEN 1 AND $MAX_CHOICE."
-  exit 1
-fi
 
 URL=""
 SCRIPT_URL=""
@@ -85,7 +71,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-printf "READY TO FLASH FIRMWARE? (Y/N): "
+echo "READY TO FLASH FIRMWARE? (Y/N): "
 read CONFIRM
 case "$CONFIRM" in
   y|Y)
