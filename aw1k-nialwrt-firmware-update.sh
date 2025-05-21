@@ -19,24 +19,23 @@ case "$CHOICE" in
   *) echo "CANCELLED."; exit 0 ;;
 esac
 
-echo "DOWNLOADING FIRMWARE OR SCRIPT ..."
-wget -q -O /tmp/fwfile "$URL" || { echo "DOWNLOAD FAILED"; exit 1; }
+echo
+echo "DOWNLOADING FIRMWARE FROM $URL ..."
+wget -q -O /tmp/fwfile "$URL"
+if [ $? -ne 0 ]; then
+  echo "ERROR: FAILED TO DOWNLOAD FIRMWARE."
+  exit 1
+fi
 
-printf "READY TO FLASH OR RUN. CONTINUE? (Y/N): "
+printf "READY TO FLASH FIRMWARE? (Y/N): "
 read CONFIRM
 case "$CONFIRM" in
   y|Y)
-    if echo "$URL" | grep -q '\.sh$'; then
-      echo "RUNNING INSTALLER SCRIPT ..."
-      chmod +x /tmp/fwfile
-      /tmp/fwfile
-    else
-      echo "FLASHING FIRMWARE IMAGE WITH SYSUPGRADE ..."
-      sysupgrade /tmp/fwfile
-    fi
+    echo "FLASHING FIRMWARE ..."
+    sysupgrade /tmp/fwfile
     ;;
   *)
-    echo "CANCELLED."
+    echo "FLASH CANCELLED."
     exit 0
     ;;
 esac
