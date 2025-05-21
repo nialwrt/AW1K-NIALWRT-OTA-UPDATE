@@ -1,10 +1,10 @@
 #!/bin/sh
 
-SCRIPT_URL="https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/refs/heads/main/aw1k-nialwrt-firmware-update.sh"
+SCRIPT_URL_ORIGINAL="https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/refs/heads/main/aw1k-nialwrt-firmware-update.sh"
 LOCAL_SCRIPT="/usr/bin/update"
 TMP_SCRIPT="/tmp/update.tmp"
 
-wget -q -O "$TMP_SCRIPT" "$SCRIPT_URL"
+wget -q -O "$TMP_SCRIPT" "$SCRIPT_URL_ORIGINAL"
 if [ $? -eq 0 ] && ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
   echo "UPDATE FOUND. UPDATING SCRIPT..."
   cp "$TMP_SCRIPT" "$LOCAL_SCRIPT"
@@ -30,6 +30,9 @@ echo "#############################"
 printf "ENTER YOUR CHOICE [1-5]: "
 read CHOICE
 
+URL=""
+SCRIPT_URL=""
+
 case "$CHOICE" in
   1) URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/NIALWRT-24.10.1.bin" ;;
   2) URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/NEVERMORESSH.bin" ;;
@@ -39,7 +42,7 @@ case "$CHOICE" in
   *) echo "CANCELLED."; exit 0 ;;
 esac
 
-if [ -n "$SCRIPT_URL" ]; then
+if [ "$CHOICE" = "4" ] || [ "$CHOICE" = "5" ]; then
   echo
   echo "DOWNLOADING INSTALLER SCRIPT FOR CHOICE $CHOICE..."
   wget -q -O /tmp/installer.sh "$SCRIPT_URL"
