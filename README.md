@@ -1,29 +1,27 @@
-AW1K NIALWRT FIRMWARE UPDATE
 
-Automated firmware updater for Arcadyan AW1000 (AW1K) using OpenWrt/ImmortalWrt-based images.
+[Status](https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE) • [License](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html) • [Maintenance](https://github.com/nialwrt)
 
-This script allows you to easily download and flash a prebuilt firmware image for your AW1K router. It's designed to be simple and direct — suitable for CLI users who want to switch between builds without manually handling firmware files.
+# AW1K NIALWRT Firmware Update
 
-Features
+## Overview
 
-Menu-driven firmware selection
+**AW1K NIALWRT Firmware Update** is a simple interactive shell script that allows users to quickly download and flash prebuilt firmware images to the Arcadyan AW1000 (AW1K) router. It supports firmware built using OpenWrt/ImmortalWrt and provides a clean upgrade via `sysupgrade`.
 
-Auto-download firmware from GitHub Releases
+## Features
 
-One-click flashing via sysupgrade -n (no config retained)
+- **Interactive Selection Menu**: Choose from multiple firmware builds directly from your device.
+- **Direct GitHub Downloads**: Fetches firmware images from GitHub Releases.
+- **Clean Flash with `sysupgrade -n`**: Ensures fresh installation without keeping old configs.
 
+## Requirements
 
-Disclaimer
+- Arcadyan AW1000 device with OpenWrt/ImmortalWrt installed
+- Internet access from the device
+- Basic shell usage
 
-Use at your own risk.
+## Quick Flash
 
-Make sure the selected firmware is compatible with your device (Arcadyan AW1000).
+Run this command directly on your OpenWrt/ImmortalWrt terminal:
 
-Flashing incorrect firmware may brick your device.
-
-
-
----
-
-```bash
+```sh
 wget -qO /tmp/fw.sh https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/main/aw1k-nialwrt-firmware-update.sh && chmod +x /tmp/fw.sh && /tmp/fw.sh
