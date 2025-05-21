@@ -72,7 +72,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo "READY TO FLASH FIRMWARE? (Y/N): "
+echo -n "READY TO FLASH FIRMWARE? (Y/N):"
 read CONFIRM
 case "$CONFIRM" in
   y|Y)
