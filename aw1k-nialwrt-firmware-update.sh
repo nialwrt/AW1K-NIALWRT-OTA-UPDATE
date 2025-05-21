@@ -1,13 +1,13 @@
 #!/bin/sh
 clear
-echo "###########################"
+echo "#############################"
 echo "AW1K NIALWRT FIRMWARE UPDATE"
-echo "###########################"
+echo "#############################"
 echo "1) IMMORTALWRT 24.10.1 FREE"
 echo "2) NEVERMORESSH"
 echo "3) QWRT V1"
 echo "4) QWRT V2"
-echo "###########################"
+echo "#############################"
 printf "ENTER YOUR CHOICE [1-4]: "
 read CHOICE
 
