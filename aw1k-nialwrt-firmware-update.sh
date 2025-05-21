@@ -25,7 +25,6 @@ echo "3) QWRT V1"
 echo "#############################"
 echo "         PREMIUM"
 echo "4) NIALWRT 24.10.1 PRO V1"
-echo "5) NIALWRT 24.10.1 PRO V2"
 echo "#############################"
 echo -n "SELECT OPTION: "
 read CHOICE
