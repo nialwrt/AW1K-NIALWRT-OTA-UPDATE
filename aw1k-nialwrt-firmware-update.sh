@@ -6,10 +6,8 @@ TMP_SCRIPT="/tmp/update.tmp"
 
 wget -q -O "$TMP_SCRIPT" "$SCRIPT_URL_ORIGINAL"
 if [ $? -eq 0 ] && ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
-  echo "UPDATE FOUND. UPDATING SCRIPT..."
   cp "$TMP_SCRIPT" "$LOCAL_SCRIPT"
   chmod +x "$LOCAL_SCRIPT"
-  echo "UPDATED SCRIPT. RESTARTING..."
   exec "$LOCAL_SCRIPT" "$@"
   exit 0
 fi
@@ -50,15 +48,11 @@ case "$CHOICE" in
 esac
 
 if [ "$IS_PREMIUM" = true ]; then
-  echo
-  echo "DOWNLOADING INSTALLER SCRIPT FOR CHOICE $CHOICE..."
   wget -q -O /tmp/installer.sh "$SCRIPT_URL"
   if [ $? -ne 0 ]; then
-    echo "ERROR: FAILED TO DOWNLOAD INSTALLER SCRIPT."
     exit 1
   fi
   chmod +x /tmp/installer.sh
-  echo "RUNNING INSTALLER SCRIPT..."
   /tmp/installer.sh
   exit 0
 fi
