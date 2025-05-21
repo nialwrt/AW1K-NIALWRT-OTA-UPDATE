@@ -15,19 +15,20 @@ if [ $? -eq 0 ] && ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
 fi
 
 clear
+clear
 echo "#############################"
-echo "AW1K NIALWRT FIRMWARE UPDATE"
+echo "#AW1K NIALWRT FIRMWARE UPDATE #"
 echo "#############################"
-echo "         FREEMIUM"
-echo "1) NIALWRT 24.10.1"
-echo "2) NEVERMORESSH"
-echo "3) QWRT V1"
+echo "#         FREEMIUM            #"
+echo "# 1) NIALWRT 24.10.1          #"
+echo "# 2) NEVERMORESSH             #"
+echo "# 3) QWRT V1                  #"
 echo "#############################"
-echo "         PREMIUM"
-echo "4) NIALWRT 24.10.1 PRO V1"
-echo "5) NIALWRT 24.10.1 PRO V2"
+echo "#         PREMIUM             #"
+echo "# 4) NIALWRT 24.10.1 PRO V1   #"
+echo "# 5) NIALWRT 24.10.1 PRO V2   #"
 echo "#############################"
-echo "SELECT OPTION: "
+echo -n "SELECT OPTION: "
 read CHOICE
 
 URL=""
