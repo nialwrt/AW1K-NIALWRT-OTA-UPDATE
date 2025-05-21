@@ -15,7 +15,6 @@ if [ $? -eq 0 ] && ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
 fi
 
 clear
-clear
 echo "#############################"
 echo "#AW1K NIALWRT FIRMWARE UPDATE #"
 echo "#############################"
