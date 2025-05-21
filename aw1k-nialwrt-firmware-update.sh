@@ -21,29 +21,24 @@ case "$CHOICE" in
   *) echo "CANCELLED."; exit 0 ;;
 esac
 
-echo
-echo "DOWNLOADING FROM $URL ..."
-wget -q -O /tmp/firmware "$URL"
-if [ $? -ne 0 ]; then
-  echo "ERROR: FAILED TO DOWNLOAD FILE."
-  exit 1
-fi
+echo "DOWNLOADING FIRMWARE OR SCRIPT ..."
+wget -q -O /tmp/fwfile "$URL" || { echo "DOWNLOAD FAILED"; exit 1; }
 
-printf "READY TO FLASH FIRMWARE. CONTINUE? (Y/N): "
+printf "READY TO FLASH OR RUN. CONTINUE? (Y/N): "
 read CONFIRM
 case "$CONFIRM" in
   y|Y)
-    if echo "$URL" | grep -qE "\.sh$"; then
+    if echo "$URL" | grep -q '\.sh$'; then
       echo "RUNNING INSTALLER SCRIPT ..."
-      chmod +x /tmp/firmware
-      /tmp/firmware
+      chmod +x /tmp/fwfile
+      /tmp/fwfile
     else
-      echo "FLASHING FIRMWARE BIN ..."
-      sysupgrade /tmp/firmware
+      echo "FLASHING FIRMWARE IMAGE WITH SYSUPGRADE ..."
+      sysupgrade /tmp/fwfile
     fi
     ;;
   *)
-    echo "FLASH CANCELLED."
+    echo "CANCELLED."
     exit 0
     ;;
 esac
