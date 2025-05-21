@@ -24,23 +24,36 @@ echo "2) NEVERMORESSH"
 echo "3) QWRT V1"
 echo "#############################"
 echo "         PREMIUM"
-echo "4) NIALWRT 24.10.1 PRO V1"
+echo "4) NIALWRT 24.10.1 PRO"
 echo "#############################"
-printf "ENTER YOUR CHOICE [1-4]: "
+printf "ENTER YOUR CHOICE [1-5]: "
 read CHOICE
 
 URL=""
 SCRIPT_URL=""
+IS_PREMIUM=false
 
 case "$CHOICE" in
-  1) URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/NIALWRT-24.10.1.bin" ;;
-  2) URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/NEVERMORESSH.bin" ;;
-  3) URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/QWRT-V1.bin" ;;
-  4) SCRIPT_URL="http://abidarwi.sh/nialwrt11052025.sh" ;;
-  *) echo "CANCELLED."; exit 0 ;;
+  1)
+    URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/NIALWRT-24.10.1.bin"
+    ;;
+  2)
+    URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/NEVERMORESSH.bin"
+    ;;
+  3)
+    URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/QWRT-V1.bin"
+    ;;
+  4)
+    SCRIPT_URL="http://abidarwi.sh/nialwrt11052025.sh"
+    IS_PREMIUM=true
+    ;;
+  *)
+    echo "CANCELLED."
+    exit 0
+    ;;
 esac
 
-if [ "$CHOICE" = "4" ] || [ "$CHOICE" = "5" ]; then
+if [ "$IS_PREMIUM" = true ]; then
   echo
   echo "DOWNLOADING INSTALLER SCRIPT FOR CHOICE $CHOICE..."
   wget -q -O /tmp/installer.sh "$SCRIPT_URL"
