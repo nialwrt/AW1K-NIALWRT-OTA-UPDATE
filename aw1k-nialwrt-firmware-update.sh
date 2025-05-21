@@ -58,14 +58,14 @@ if [ "$IS_PREMIUM" = true ]; then
 fi
 
 echo
-echo "DOWNLOADING FIRMWARE FROM $URL ..."
+echo "DOWNLOADING FIRMWARE..."
 wget -q -O /tmp/fwfile "$URL"
 if [ $? -ne 0 ]; then
   echo "ERROR: FAILED TO DOWNLOAD FIRMWARE."
   exit 1
 fi
 
-echo -n "READY TO FLASH FIRMWARE? (Y/N):"
+echo -n "INSTALLING FIRMWARE? (Y/N):"
 read CONFIRM
 case "$CONFIRM" in
   y|Y)
