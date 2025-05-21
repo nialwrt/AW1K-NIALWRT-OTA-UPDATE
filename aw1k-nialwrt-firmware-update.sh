@@ -7,7 +7,7 @@ echo "1) NIALWRT 24.10.1"
 echo "2) NEVERMORESSH"
 echo "3) QWRT V1"
 echo "#############################"
-printf "ENTER YOUR CHOICE [1-4]: "
+printf "ENTER YOUR CHOICE [1-3]: "
 read CHOICE
 
 case "$CHOICE" in
