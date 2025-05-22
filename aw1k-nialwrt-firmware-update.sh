@@ -25,7 +25,6 @@ echo "3) IMMORTALWRT 24.10.1 PRO"
 echo "4) OPENWRT 24.10.1 PRO"
 echo "#############################"
 echo -n "SELECT OPTION: "
-echo -n "SELECT OPTION: "
 read CHOICE
 
 URL=""
