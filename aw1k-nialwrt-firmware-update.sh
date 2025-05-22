@@ -57,8 +57,6 @@ if [ "$IS_PREMIUM" = true ]; then
   exit 0
 fi
 
-GITHUB_TOKEN="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"
-
 echo
 echo "DOWNLOADING FIRMWARE..."
 wget --header="Authorization: token $GITHUB_TOKEN" \
