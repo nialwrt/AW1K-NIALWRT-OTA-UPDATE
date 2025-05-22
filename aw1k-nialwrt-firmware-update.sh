@@ -37,13 +37,13 @@ case "$CHOICE" in
     URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/IMMORTALWRT-24.10.1-LITE.bin"
     ;;
   2)
-    URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/NEVERMORESSH.bin"
+    URL="-"
     ;;
   3)
-    URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/QWRT-V1.bin"
+    URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/IMMORTALWRT-24.10.1-PRO.bin"
     ;;
   4)
-    SCRIPT_URL="http://abidarwi.sh/nialwrt11052025.sh"
+    SCRIPT_URL="-"
     IS_PREMIUM=true
     ;;
 esac
