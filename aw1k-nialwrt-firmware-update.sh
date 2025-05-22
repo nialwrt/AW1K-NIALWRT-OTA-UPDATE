@@ -13,17 +13,17 @@ if [ $? -eq 0 ] && ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
 fi
 
 clear
-echo "#############################"
-echo "AW1K NIALWRT FIRMWARE UPDATE"
-echo "#############################"
-echo "          FREEMIUM"
-echo "1) IMMORTALWRT 24.10.1 LITE"
-echo "2) OPENWRT 24.10.1 LITE"
-echo "#############################"
-echo "          PREMIUM"
-echo "3) IMMORTALWRT 24.10.1 PRO"
-echo "4) OPENWRT 24.10.1 PRO"
-echo "#############################"
+echo "####################################"
+echo "      AW1K NIALWRT OTA UPDATE       "
+echo "####################################"
+echo "             FREEMIUM              "
+echo " 1) IMMORTALWRT 24.10.1 LITE       "
+echo " 2) OPENWRT 24.10.1 LITE           "
+echo "####################################"
+echo "             PREMIUM               "
+echo " 3) IMMORTALWRT 24.10.1 PRO        "
+echo " 4) OPENWRT 24.10.1 PRO            "
+echo "####################################"
 echo -n "SELECT OPTION: "
 read CHOICE
 
