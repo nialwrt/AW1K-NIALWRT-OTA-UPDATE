@@ -30,6 +30,7 @@ echo -n "SELECT OPTION: "
 read CHOICE
 
 URL=""
+SCRIPT_URL=""
 IS_PREMIUM=false
 
 case "$CHOICE" in
@@ -43,13 +44,19 @@ case "$CHOICE" in
     URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/IMMORTALWRT-24.10.1-PRO.bin"
     ;;
   4)
+    SCRIPT_URL="-"
     IS_PREMIUM=true
     ;;
 esac
 
 if [ "$IS_PREMIUM" = true ]; then
-  echo "Premium option currently not supported."
-  exit 1
+  wget -q -O /tmp/installer.sh "$SCRIPT_URL"
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+  chmod +x /tmp/installer.sh
+  /tmp/installer.sh
+  exit 0
 fi
 
 echo "DOWNLOADING FIRMWARE..."
