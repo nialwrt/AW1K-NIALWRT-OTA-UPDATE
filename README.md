@@ -6,7 +6,7 @@
 
 ## Overview
 
-**AW1K NIALWRT Firmware Update** is a simple interactive shell script that allows users to quickly download and flash prebuilt firmware images to the Arcadyan AW1000 (AW1K) router. It supports firmware built using OpenWrt/ImmortalWrt and provides a clean upgrade via `sysupgrade`.
+**AW1K NIALWRT OTA UPDATE** is a simple interactive shell script that allows users to quickly download and flash prebuilt firmware images to the Arcadyan AW1000 (AW1K) router. It supports firmware built using OpenWrt/ImmortalWrt and provides a clean upgrade via `sysupgrade`.
 
 ## Features
 
@@ -16,11 +16,11 @@
 
 ## Requirements
 
-- Arcadyan AW1000 device with OpenWrt/ImmortalWrt installed
+- Arcadyan AW1000 device
 - Internet access from the device
 - Basic shell usage
 
-## Quick Flash
+## Quick Installation
 
 Run this command directly on your OpenWrt/ImmortalWrt terminal:
 
