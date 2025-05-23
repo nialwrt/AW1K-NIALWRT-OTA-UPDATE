@@ -16,7 +16,7 @@
 
 ## Requirements
 
-- Arcadyan AW1000 device
+- Arcadyan AW1000 (AW1K) 
 - Internet access from the device
 - Basic shell usage
 
