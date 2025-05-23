@@ -1,6 +1,6 @@
 #!/bin/sh
 
-rm -f /tmp/update.tmp /tmp/fwfile
+rm -f /tmp/update.tmp /tmp/fwfile /usr/bin/update
 
 SCRIPT_URL_ORIGINAL="https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-OTA-UPDATE/refs/heads/main/aw1k-nialwrt-ota-update.sh"
 LOCAL_SCRIPT="/usr/bin/update"
