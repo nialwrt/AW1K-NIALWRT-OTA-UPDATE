@@ -25,4 +25,4 @@
 Run this command directly on your OpenWrt/ImmortalWrt terminal:
 
 ```sh
-wget -qO /tmp/update.tmp https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-OTA-UPDATE/refs/heads/main/aw1k-nialwrt-ota-update.sh && chmod +x /tmp/update.tmp && //tmp/update.tmp
+wget -qO /tmp/update.tmp https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-OTA-UPDATE/refs/heads/main/aw1k-nialwrt-ota-update.sh && chmod +x /tmp/update.tmp && /tmp/update.tmp
