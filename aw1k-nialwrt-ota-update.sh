@@ -61,6 +61,7 @@ echo "DOWNLOADING FIRMWARE..."
 wget -q -O /tmp/fwfile "$URL"
 if [ $? -ne 0 ]; then
   echo "ERROR: FAILED TO DOWNLOAD FIRMWARE."
+  rm -f /tmp/fwfile
   exit 1
 fi
 
@@ -73,6 +74,7 @@ case "$CONFIRM" in
     ;;
   *)
     echo "FLASH CANCELLED."
+    rm -f /tmp/fwfile
     exit 0
     ;;
 esac
