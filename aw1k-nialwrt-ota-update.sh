@@ -41,10 +41,16 @@ case "$CHOICE" in
     URL="-"
     ;;
   3)
+    URL="https://github.com/nialwrt/AW1K-NIALWRT-OTA-UPDATE/releases/download/FIRMWARE/IMMORTALWRT-24.10.1-PRO.bin"
+    ;;
+  4)
+    URL="-"
+    ;;
+  5)
     SCRIPT_URL="-"
     IS_PREMIUM=true
     ;;
-  4)
+  6)
     SCRIPT_URL="-"
     IS_PREMIUM=true
     ;;
