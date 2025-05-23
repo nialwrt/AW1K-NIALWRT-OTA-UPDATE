@@ -2,7 +2,7 @@
 
 rm -f /tmp/update.tmp /tmp/fwfile
 
-SCRIPT_URL_ORIGINAL="https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-OTA-UPDATE/refs/heads/main/aw1k-nialwrt-ota-update.sh"
+SCRIPT_URL_ORIGINAL="https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-OTA-UPDATE/refs/heads/main/aw1k-nialwrt-ota-update.sh?token=GHSAT0AAAAAADDYNHTKNIXYZH6OPCK7PKBU2BQGK3A"
 LOCAL_SCRIPT="/usr/bin/update"
 TMP_SCRIPT="/tmp/update.tmp"
 
