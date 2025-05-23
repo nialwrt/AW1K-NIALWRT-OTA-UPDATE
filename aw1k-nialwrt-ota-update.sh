@@ -41,7 +41,8 @@ case "$CHOICE" in
     URL="-"
     ;;
   3)
-    URL="-"
+    SCRIPT_URL="-"
+    IS_PREMIUM=true
     ;;
   4)
     SCRIPT_URL="-"
