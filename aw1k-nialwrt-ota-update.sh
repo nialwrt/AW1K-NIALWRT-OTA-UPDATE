@@ -35,7 +35,7 @@ IS_PREMIUM=false
 
 case "$CHOICE" in
   1)
-    URL="https://github.com/nialwrt/AW1K-NIALWRT-FIRMWARE-UPDATE/releases/download/AW1K-FIRMWARE/IMMORTALWRT-24.10.1-LITE.bin"
+    URL="https://github.com/nialwrt/AW1K-NIALWRT-OTA-UPDATE/releases/download/AW1K-FIRMWARE/IMMORTALWRT-24.10.1-LITE.bin"
     ;;
   2)
     URL="-"
