@@ -57,7 +57,6 @@ if [ "$IS_PREMIUM" = true ]; then
   exit 0
 fi
 
-echo
 echo "DOWNLOADING FIRMWARE..."
 wget --header="Authorization: token $GITHUB_TOKEN" \
      -q -O /tmp/fwfile "$URL"
