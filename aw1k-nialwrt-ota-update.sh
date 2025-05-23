@@ -58,8 +58,7 @@ if [ "$IS_PREMIUM" = true ]; then
 fi
 
 echo "DOWNLOADING FIRMWARE..."
-wget --header="Authorization: token $GITHUB_TOKEN" \
-     -q -O /tmp/fwfile "$URL"
+wget -q -O /tmp/fwfile "$URL"
 if [ $? -ne 0 ]; then
   echo "ERROR: FAILED TO DOWNLOAD FIRMWARE."
   exit 1
