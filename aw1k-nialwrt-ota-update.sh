@@ -71,7 +71,6 @@ case "$CONFIRM" in
   y|Y)
     echo "FLASHING FIRMWARE ..."
     sysupgrade -n /tmp/fwfile
-    rm -f /tmp/fwfile
     ;;
   *)
     echo "FLASH CANCELLED."
