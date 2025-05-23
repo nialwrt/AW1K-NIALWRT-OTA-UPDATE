@@ -2,7 +2,7 @@
 [![License](https://img.shields.io/badge/License-GPLv2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 [![Maintenance](https://img.shields.io/badge/Maintained-Yes-brightgreen.svg)](https://github.com/nialwrt/UNIVERSAL-NIALWRT)
 
-# AW1K NIALWRT Firmware Update
+# AW1K NIALWRT OTA UPDATE
 
 ## Overview
 
