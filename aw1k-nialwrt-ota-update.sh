@@ -2,7 +2,6 @@
 
 # -------- CONFIG --------
 SERVER_URL="http://192.168.1.197"
-
 DATA_DIR="/etc/ota-client"
 TOKEN_FILE="$DATA_DIR/ota_token"
 TMPFW="$DATA_DIR/fwfile.bin"
@@ -41,6 +40,7 @@ get_uuid_and_token() {
 
   echo "REGISTERING TO OTA SERVER..."
   RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" -d "{\"uuid\":\"$UUID\"}" "$SERVER_URL/register")
+  echo "SERVER RESPONSE: $RESPONSE"
 
   STATUS=$(echo "$RESPONSE" | grep -o '"status":"[^"]*"' | cut -d':' -f2 | tr -d '"')
 
@@ -51,6 +51,7 @@ get_uuid_and_token() {
     echo "REGISTERED SUCCESSFULLY WITH TOKEN."
   elif [ "$STATUS" = "pending" ]; then
     echo "REGISTRATION PENDING APPROVAL. PLEASE WAIT."
+    echo "Ask the admin to approve UUID: $UUID"
     exit 1
   else
     echo "REGISTRATION FAILED. CONTACT ADMIN."
@@ -93,6 +94,8 @@ download_firmware() {
     rm -f "$TMPFW"
     exit 1
   fi
+
+  echo "FIRMWARE DOWNLOADED SUCCESSFULLY: $TMPFW"
 }
 
 flash_firmware() {
