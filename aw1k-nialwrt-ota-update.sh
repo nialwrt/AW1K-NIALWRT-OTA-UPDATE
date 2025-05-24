@@ -86,6 +86,18 @@ select_firmware() {
   esac
 }
 
+confirm_flash() {
+  echo -n "THIS WILL IMMEDIATELY FLASH AFTER DOWNLOAD. PROCEED? (Y/N): "
+  read -r CONFIRM
+  case "$CONFIRM" in
+    [Yy]* ) ;;
+    * )
+      echo "ABORTED. EXITING WITHOUT DOWNLOADING."
+      exit 0
+      ;;
+  esac
+}
+
 download_firmware() {
   echo "REMOVING OLD FIRMWARE FILE IF ANY..."
   rm -f "$TMPFW"
@@ -104,20 +116,9 @@ download_firmware() {
 }
 
 flash_firmware() {
-  echo -n "FLASH NOW? (Y/N): "
-  read -r CONFIRM
-  case "$CONFIRM" in
-    [Yy]* )
-      echo "FLASHING..."
-      sysupgrade -n "$TMPFW"
-      rm -f "$TMPFW"
-      ;;
-    *)
-      echo "ABORTED. NO FLASH."
-      rm -f "$TMPFW"
-      exit 0
-      ;;
-  esac
+  echo "FLASHING..."
+  sysupgrade -n "$TMPFW"
+  rm -f "$TMPFW"
 }
 
 mkdir -p "$DATA_DIR"
@@ -136,5 +137,6 @@ fi
 
 get_name_and_mac
 select_firmware
+confirm_flash
 download_firmware
 flash_firmware
