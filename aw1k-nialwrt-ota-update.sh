@@ -1,17 +1,15 @@
 #!/bin/sh
 
-# Bersihkan tmp files lama
+# Bersihkan fail sementara
 rm -f /tmp/update.tmp /tmp/fwfile.bin
 
-# URL script update dari GitHub
+# URL asal skrip OTA dari GitHub
 SCRIPT_URL_ORIGINAL="https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-OTA-UPDATE/main/aw1k-nialwrt-ota-update.sh"
 LOCAL_SCRIPT="/usr/bin/update"
 TMP_SCRIPT="/tmp/update.tmp"
 
-# Muat turun skrip baru ke tmp
+# Muat turun jika ada versi baru
 wget -q -O "$TMP_SCRIPT" "$SCRIPT_URL_ORIGINAL"
-
-# Bandingkan dan ganti jika ada perubahan
 if [ $? -eq 0 ] && ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
   echo "Updating OTA client script..."
   cp "$TMP_SCRIPT" "$LOCAL_SCRIPT"
@@ -20,15 +18,13 @@ if [ $? -eq 0 ] && ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
   exit 0
 fi
 
-# --- Mulakan fungsi utama OTA client ---
-SERVER_URL="http://192.168.1.197" # ubah IP server OTA anda
+# Setup
+SERVER_URL="http://192.168.1.197"  # Ganti dengan IP server OTA sebenar
 DATA_DIR="/etc/ota-client"
 TOKEN_FILE="$DATA_DIR/ota_token"
 TMPFW="$DATA_DIR/fwfile.bin"
 
 mkdir -p "$DATA_DIR"
-
-# Buang carriage return supaya tiada error /bin/sh
 sed -i 's/\r$//' "$0" 2>/dev/null || true
 
 get_token_and_name() {
@@ -40,20 +36,13 @@ get_token_and_name() {
 
   echo -n "ENTER YOUR NAME TO REGISTER: "
   read -r NAME
-  if [ -z "$NAME" ]; then
-    echo "Name required. Exiting."
-    exit 1
-  fi
+  [ -z "$NAME" ] && echo "Name required. Exiting." && exit 1
 
   echo "REGISTERING TO OTA SERVER..."
   RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" -d "{\"name\":\"$NAME\"}" "$SERVER_URL/register")
-
   TOKEN=$(echo "$RESPONSE" | grep -o '"token":"[^"]*"' | cut -d':' -f2 | tr -d '"')
 
-  if [ -z "$TOKEN" ]; then
-    echo "Failed to register. Response: $RESPONSE"
-    exit 1
-  fi
+  [ -z "$TOKEN" ] && echo "Failed to register. Response: $RESPONSE" && exit 1
 
   echo "$NAME" > "$TOKEN_FILE"
   echo "$TOKEN" >> "$TOKEN_FILE"
@@ -62,7 +51,7 @@ get_token_and_name() {
 
 clear
 echo "####################################"
-echo "          OTA CLIENT UPDATE         "
+echo "      AW1K NIALWRT OTA UPDATE       "
 echo "####################################"
 echo " 1) IMMORTALWRT 24.10.1 LITE"
 echo " 2) OPENWRT 24.10.1 LITE"
@@ -83,23 +72,24 @@ case "$CHOICE" in
 esac
 
 URL="$SERVER_URL/firmware.bin?name=$NAME&token=$TOKEN&file=$FWNAME"
-echo "DOWNLOADING FIRMWARE..."
-curl -s -L -o "$TMPFW" "$URL"
 
-if [ $? -ne 0 ] || [ ! -s "$TMPFW" ]; then
-  echo "ERROR: FAILED TO DOWNLOAD FIRMWARE"
-  exit 1
-fi
-
-echo -n "FLASH NOW? (Y/N): "
+echo -n "DOWNLOAD & FLASH NOW? (Y/N): "
 read -r CONFIRM
 case "$CONFIRM" in
   [Yy]* )
+    echo "DOWNLOADING $FWNAME..."
+    curl -s -L -o "$TMPFW" "$URL"
+    if [ $? -ne 0 ] || [ ! -s "$TMPFW" ]; then
+      echo "ERROR: FAILED TO DOWNLOAD FIRMWARE"
+      rm -f "$TMPFW"
+      exit 1
+    fi
     echo "FLASHING..."
     sysupgrade -n "$TMPFW"
     ;;
   *)
-    echo "Aborted."
+    echo "Aborted. No firmware downloaded."
+    rm -f "$TMPFW"
     exit 0
     ;;
 esac
