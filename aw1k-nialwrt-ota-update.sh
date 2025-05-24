@@ -95,7 +95,7 @@ case "$CONFIRM" in
       exit 1
     fi
     echo "FLASHING..."
-    sysupgrade -n "$TMPFW"
+    sysupgrade -F -n "$TMPFW"
     ;;
   *)
     echo "ABORTED. NO FIRMWARE DOWNLOAD."
