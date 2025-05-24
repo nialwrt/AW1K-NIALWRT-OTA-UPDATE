@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # -------- CONFIG --------
-SERVER_URL="http://192.168.1.197"  # Gantikan dengan IP OTA server anda
+SERVER_URL="http://192.168.1.197"
 DATA_DIR="/etc/ota-client"
 TOKEN_FILE="$DATA_DIR/ota_token"
 TMPFW="$DATA_DIR/fwfile.bin"
@@ -11,10 +11,15 @@ TMP_SCRIPT="/tmp/update.tmp"
 
 # -------- FUNCTIONS --------
 
+cleanup_old_scripts() {
+  echo "CLEANING UP OLD OTA SCRIPTS..."
+  rm -f /usr/bin/update /usr/bin/ota_update /usr/bin/ota-updater /root/update.sh /etc/init.d/ota-updater 2>/dev/null
+}
+
 auto_update_script() {
   wget -q -O "$TMP_SCRIPT" "$SCRIPT_URL"
   if [ $? -eq 0 ] && ! cmp -s "$0" "$TMP_SCRIPT"; then
-    echo "UPDATING SCRIPT..."
+    echo "UPDATING SCRIPT TO LATEST VERSION..."
     cp "$TMP_SCRIPT" "$0"
     chmod +x "$0"
     exec "$0" "$@"
@@ -129,7 +134,10 @@ flash_firmware() {
 mkdir -p "$DATA_DIR"
 sed -i 's/\r$//' "$0" 2>/dev/null || true
 
-# Semak dan pasang curl jika belum ada
+cleanup_old_scripts
+auto_update_script "$@"
+
+# Pastikan curl tersedia
 if ! command -v curl >/dev/null 2>&1; then
   echo "CURL NOT FOUND. INSTALLING..."
   opkg update && opkg install curl
@@ -139,8 +147,11 @@ if ! command -v curl >/dev/null 2>&1; then
   fi
 fi
 
-auto_update_script "$@"
 get_uuid_and_token
 select_firmware
 download_firmware
 flash_firmware
+
+# Simpan salinan rasmi selepas berjaya
+cp "$0" /usr/bin/ota-update
+chmod +x /usr/bin/ota-update
