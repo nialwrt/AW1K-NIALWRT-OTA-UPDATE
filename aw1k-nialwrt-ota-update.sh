@@ -101,7 +101,7 @@ flash_firmware() {
   case "$CONFIRM" in
     [Yy]* )
       echo "FLASHING..."
-      sysupgrade -F -n "$TMPFW"
+      sysupgrade -n "$TMPFW"
       rm -f "$TMPFW"
       ;;
     *)
