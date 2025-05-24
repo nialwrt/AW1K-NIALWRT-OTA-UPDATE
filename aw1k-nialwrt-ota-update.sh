@@ -83,22 +83,23 @@ esac
 
 URL="$SERVER_URL/firmware.bin?uuid=$UUID&token=$TOKEN&file=$FWNAME"
 
-echo -n "DOWNLOAD & FLASH NOW? (Y/N): "
+echo "DOWNLOADING: $FWNAME"
+curl -s -L -o "$TMPFW" "$URL"
+if [ $? -ne 0 ] || [ ! -s "$TMPFW" ]; then
+  echo "ERROR: FAILED TO DOWNLOAD FIRMWARE"
+  rm -f "$TMPFW"
+  exit 1
+fi
+
+echo -n "DOWNLOAD COMPLETE. FLASH NOW? (Y/N): "
 read -r CONFIRM
 case "$CONFIRM" in
   [Yy]* )
-    echo "DOWNLOADING: $FWNAME"
-    curl -s -L -o "$TMPFW" "$URL"
-    if [ $? -ne 0 ] || [ ! -s "$TMPFW" ]; then
-      echo "ERROR: FAILED TO DOWNLOAD FIRMWARE"
-      rm -f "$TMPFW"
-      exit 1
-    fi
     echo "FLASHING..."
-    sysupgrade -F -n "$TMPFW"
+    sysupgrade -n "$TMPFW"
     ;;
   *)
-    echo "ABORTED. NO FIRMWARE DOWNLOAD."
+    echo "ABORTED. NO FLASHING."
     rm -f "$TMPFW"
     exit 0
     ;;
