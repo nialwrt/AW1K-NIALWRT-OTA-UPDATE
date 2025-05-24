@@ -22,18 +22,18 @@ get_mac_address() {
   ip link show | awk '/ether/ {print $2; exit}'
 }
 
-get_uuid_and_token() {
+get_name_and_mac() {
   if [ -f "$TOKEN_FILE" ]; then
-    UUID=$(sed -n '1p' "$TOKEN_FILE")
+    NAME=$(sed -n '1p' "$TOKEN_FILE")
     MAC=$(sed -n '2p' "$TOKEN_FILE")
-    if [ -n "$UUID" ] && [ -n "$MAC" ]; then
+    if [ -n "$NAME" ] && [ -n "$MAC" ]; then
       return 0
     fi
   fi
 
   echo -n "ENTER YOUR NAME TO REGISTER: "
-  read -r UUID
-  if [ -z "$UUID" ]; then
+  read -r NAME
+  if [ -z "$NAME" ]; then
     echo "NAME CANNOT BE EMPTY. EXITING."
     exit 1
   fi
@@ -42,7 +42,7 @@ get_uuid_and_token() {
 
   echo "REGISTERING TO OTA SERVER..."
   RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" \
-    -d "{\"name\":\"$UUID\", \"mac\":\"$MAC\"}" \
+    -d "{\"name\":\"$NAME\", \"mac\":\"$MAC\"}" \
     "$SERVER_URL/register")
 
   echo "SERVER RESPONSE: $RESPONSE"
@@ -50,12 +50,12 @@ get_uuid_and_token() {
   STATUS=$(echo "$RESPONSE" | grep -o '"status":"[^"]*"' | cut -d':' -f2 | tr -d '"')
 
   if [ "$STATUS" = "ok" ]; then
-    echo "$UUID" > "$TOKEN_FILE"
+    echo "$NAME" > "$TOKEN_FILE"
     echo "$MAC" >> "$TOKEN_FILE"
     echo "REGISTERED SUCCESSFULLY."
   elif [ "$STATUS" = "pending" ]; then
     echo "REGISTRATION PENDING APPROVAL. PLEASE WAIT."
-    echo "Ask the admin to approve: $UUID"
+    echo "Ask the admin to approve: $NAME"
     exit 1
   else
     echo "REGISTRATION FAILED. CONTACT ADMIN."
@@ -89,7 +89,7 @@ download_firmware() {
   echo "REMOVING OLD FIRMWARE FILE IF ANY..."
   rm -f "$TMPFW"
 
-  URL="$SERVER_URL/firmware.bin?name=$UUID&mac=$MAC&file=$FWNAME"
+  URL="$SERVER_URL/firmware.bin?name=$NAME&mac=$MAC&file=$FWNAME"
   echo "DOWNLOADING: $FWNAME"
   curl -s -L -o "$TMPFW" "$URL"
 
@@ -133,7 +133,7 @@ if ! command -v curl >/dev/null 2>&1; then
   fi
 fi
 
-get_uuid_and_token
+get_name_and_mac
 select_firmware
 download_firmware
 flash_firmware
