@@ -23,10 +23,13 @@ get_mac_address() {
 }
 
 get_name_and_mac() {
+  MAC=$(get_mac_address)
+
   if [ -f "$TOKEN_FILE" ]; then
-    NAME=$(sed -n '1p' "$TOKEN_FILE")
-    MAC=$(sed -n '2p' "$TOKEN_FILE")
-    if [ -n "$NAME" ] && [ -n "$MAC" ]; then
+    STORED_NAME=$(sed -n '1p' "$TOKEN_FILE")
+    STORED_MAC=$(sed -n '2p' "$TOKEN_FILE")
+    if [ "$MAC" = "$STORED_MAC" ] && [ -n "$STORED_NAME" ]; then
+      NAME="$STORED_NAME"
       return 0
     fi
   fi
@@ -37,8 +40,6 @@ get_name_and_mac() {
     echo "NAME CANNOT BE EMPTY. EXITING."
     exit 1
   fi
-
-  MAC=$(get_mac_address)
 
   echo "REGISTERING TO OTA SERVER..."
   RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" \
