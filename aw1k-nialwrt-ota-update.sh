@@ -1,15 +1,12 @@
 #!/bin/sh
 
-# Bersihkan fail sementara
 rm -f /tmp/update.tmp /tmp/fwfile.bin
 
-# URL asal skrip OTA dari GitHub
-SCRIPT_URL_ORIGINAL="https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-OTA-UPDATE/main/aw1k-nialwrt-ota-update.sh"
+SCRIPT_URL="https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-OTA-UPDATE/main/aw1k-nialwrt-ota-update.sh"
 LOCAL_SCRIPT="/usr/bin/update"
 TMP_SCRIPT="/tmp/update.tmp"
 
-# Muat turun jika ada versi baru
-wget -q -O "$TMP_SCRIPT" "$SCRIPT_URL_ORIGINAL"
+wget -q -O "$TMP_SCRIPT" "$SCRIPT_URL"
 if [ $? -eq 0 ] && ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
   echo "Updating OTA client script..."
   cp "$TMP_SCRIPT" "$LOCAL_SCRIPT"
@@ -18,8 +15,7 @@ if [ $? -eq 0 ] && ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
   exit 0
 fi
 
-# Setup
-SERVER_URL="http://192.168.1.197"  # Ganti dengan IP server OTA sebenar
+SERVER_URL="http://192.168.1.197"
 DATA_DIR="/etc/ota-client"
 TOKEN_FILE="$DATA_DIR/ota_token"
 TMPFW="$DATA_DIR/fwfile.bin"
@@ -31,18 +27,26 @@ get_token_and_name() {
   if [ -f "$TOKEN_FILE" ]; then
     NAME=$(sed -n '1p' "$TOKEN_FILE")
     TOKEN=$(sed -n '2p' "$TOKEN_FILE")
-    [ -n "$NAME" ] && [ -n "$TOKEN" ] && return 0
+    if [ -n "$NAME" ] && [ -n "$TOKEN" ]; then
+      return 0
+    fi
   fi
 
   echo -n "ENTER YOUR NAME TO REGISTER: "
   read -r NAME
-  [ -z "$NAME" ] && echo "Name required. Exiting." && exit 1
+  if [ -z "$NAME" ]; then
+    echo "Name required. Exiting."
+    exit 1
+  fi
 
   echo "REGISTERING TO OTA SERVER..."
   RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" -d "{\"name\":\"$NAME\"}" "$SERVER_URL/register")
   TOKEN=$(echo "$RESPONSE" | grep -o '"token":"[^"]*"' | cut -d':' -f2 | tr -d '"')
 
-  [ -z "$TOKEN" ] && echo "Failed to register. Response: $RESPONSE" && exit 1
+  if [ -z "$TOKEN" ]; then
+    echo "Registration failed. Server response: $RESPONSE"
+    exit 1
+  fi
 
   echo "$NAME" > "$TOKEN_FILE"
   echo "$TOKEN" >> "$TOKEN_FILE"
@@ -77,7 +81,7 @@ echo -n "DOWNLOAD & FLASH NOW? (Y/N): "
 read -r CONFIRM
 case "$CONFIRM" in
   [Yy]* )
-    echo "DOWNLOADING $FWNAME..."
+    echo "DOWNLOADING: $FWNAME"
     curl -s -L -o "$TMPFW" "$URL"
     if [ $? -ne 0 ] || [ ! -s "$TMPFW" ]; then
       echo "ERROR: FAILED TO DOWNLOAD FIRMWARE"
@@ -88,7 +92,7 @@ case "$CONFIRM" in
     sysupgrade -n "$TMPFW"
     ;;
   *)
-    echo "Aborted. No firmware downloaded."
+    echo "ABORTED. NO FIRMWARE DOWNLOAD."
     rm -f "$TMPFW"
     exit 0
     ;;
