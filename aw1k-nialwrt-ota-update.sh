@@ -1,5 +1,5 @@
 #!/bin/sh
-SERVER_URL="http://192.168.1.197"
+SERVER_URL="http://update.nialvpn.me"
 DATA_DIR="/etc/ota-client"
 TOKEN_FILE="$DATA_DIR/ota_token"
 TMPFW="$DATA_DIR/fwfile.bin"
