@@ -8,7 +8,7 @@ TMP_SCRIPT="/tmp/update.tmp"
 
 wget -q -O "$TMP_SCRIPT" "$SCRIPT_URL"
 if [ $? -eq 0 ] && ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
-  echo "Updating OTA client script..."
+  echo "UPDATING SCRIPT..."
   cp "$TMP_SCRIPT" "$LOCAL_SCRIPT"
   chmod +x "$LOCAL_SCRIPT"
   exec "$LOCAL_SCRIPT" "$@"
@@ -35,7 +35,7 @@ get_token_and_name() {
   echo -n "ENTER YOUR NAME TO REGISTER: "
   read -r NAME
   if [ -z "$NAME" ]; then
-    echo "Name required. Exiting."
+    echo "EXISTING DEVICE."
     exit 1
   fi
 
