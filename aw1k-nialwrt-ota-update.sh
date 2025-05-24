@@ -19,11 +19,17 @@ auto_update_script() {
 }
 
 get_mac_address() {
-  ip link show | awk '/ether/ {print $2; exit}'
+  ip link show br-lan 2>/dev/null | awk '/ether/ {print $2}' | head -n 1
 }
 
 get_name_and_mac() {
   MAC=$(get_mac_address)
+  echo "DETECTED MAC: $MAC"
+
+  if [ -z "$MAC" ]; then
+    echo "FAILED TO DETECT MAC ADDRESS. EXITING."
+    exit 1
+  fi
 
   if [ -f "$TOKEN_FILE" ]; then
     STORED_NAME=$(sed -n '1p' "$TOKEN_FILE")
