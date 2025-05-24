@@ -35,8 +35,8 @@ get_mac_address() {
 get_uuid_and_token() {
   if [ -f "$TOKEN_FILE" ]; then
     UUID=$(sed -n '1p' "$TOKEN_FILE")
-    TOKEN=$(sed -n '2p' "$TOKEN_FILE")
-    if [ -n "$UUID" ] && [ -n "$TOKEN" ]; then
+    MAC=$(sed -n '2p' "$TOKEN_FILE")
+    if [ -n "$UUID" ] && [ -n "$MAC" ]; then
       return 0
     fi
   fi
@@ -60,10 +60,9 @@ get_uuid_and_token() {
   STATUS=$(echo "$RESPONSE" | grep -o '"status":"[^"]*"' | cut -d':' -f2 | tr -d '"')
 
   if [ "$STATUS" = "ok" ]; then
-    TOKEN=$(echo "$RESPONSE" | grep -o '"token":"[^"]*"' | cut -d':' -f2 | tr -d '"')
     echo "$UUID" > "$TOKEN_FILE"
-    echo "$TOKEN" >> "$TOKEN_FILE"
-    echo "REGISTERED SUCCESSFULLY WITH TOKEN."
+    echo "$MAC" >> "$TOKEN_FILE"
+    echo "REGISTERED SUCCESSFULLY."
   elif [ "$STATUS" = "pending" ]; then
     echo "REGISTRATION PENDING APPROVAL. PLEASE WAIT."
     echo "Ask the admin to approve: $UUID"
@@ -100,7 +99,7 @@ download_firmware() {
   echo "REMOVING OLD FIRMWARE FILE IF ANY..."
   rm -f "$TMPFW"
 
-  URL="$SERVER_URL/firmware.bin?token=$TOKEN&file=$FWNAME"
+  URL="$SERVER_URL/firmware.bin?name=$UUID&mac=$MAC&file=$FWNAME"
   echo "DOWNLOADING: $FWNAME"
   curl -s -L -o "$TMPFW" "$URL"
 
@@ -138,7 +137,6 @@ sed -i 's/\r$//' "$0" 2>/dev/null || true
 cleanup_old_scripts
 auto_update_script "$@"
 
-# Pastikan curl tersedia
 if ! command -v curl >/dev/null 2>&1; then
   echo "CURL NOT FOUND. INSTALLING..."
   opkg update && opkg install curl
