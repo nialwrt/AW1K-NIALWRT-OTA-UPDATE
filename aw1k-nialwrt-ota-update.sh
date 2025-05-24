@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # -------- CONFIG --------
-SERVER_URL="http://192.168.1.197"
+SERVER_URL="http://192.168.1.197"  # Gantikan dengan IP OTA server anda
 DATA_DIR="/etc/ota-client"
 TOKEN_FILE="$DATA_DIR/ota_token"
 TMPFW="$DATA_DIR/fwfile.bin"
@@ -22,6 +22,10 @@ auto_update_script() {
   fi
 }
 
+get_mac_address() {
+  ip link show | awk '/ether/ {print $2; exit}'
+}
+
 get_uuid_and_token() {
   if [ -f "$TOKEN_FILE" ]; then
     UUID=$(sed -n '1p' "$TOKEN_FILE")
@@ -38,8 +42,13 @@ get_uuid_and_token() {
     exit 1
   fi
 
+  MAC=$(get_mac_address)
+
   echo "REGISTERING TO OTA SERVER..."
-  RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" -d "{\"uuid\":\"$UUID\"}" "$SERVER_URL/register")
+  RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" \
+    -d "{\"name\":\"$UUID\", \"mac\":\"$MAC\"}" \
+    "$SERVER_URL/register")
+
   echo "SERVER RESPONSE: $RESPONSE"
 
   STATUS=$(echo "$RESPONSE" | grep -o '"status":"[^"]*"' | cut -d':' -f2 | tr -d '"')
@@ -51,7 +60,7 @@ get_uuid_and_token() {
     echo "REGISTERED SUCCESSFULLY WITH TOKEN."
   elif [ "$STATUS" = "pending" ]; then
     echo "REGISTRATION PENDING APPROVAL. PLEASE WAIT."
-    echo "Ask the admin to approve UUID: $UUID"
+    echo "Ask the admin to approve: $UUID"
     exit 1
   else
     echo "REGISTRATION FAILED. CONTACT ADMIN."
@@ -85,7 +94,7 @@ download_firmware() {
   echo "REMOVING OLD FIRMWARE FILE IF ANY..."
   rm -f "$TMPFW"
 
-  URL="$SERVER_URL/firmware.bin?uuid=$UUID&token=$TOKEN&file=$FWNAME"
+  URL="$SERVER_URL/firmware.bin?token=$TOKEN&file=$FWNAME"
   echo "DOWNLOADING: $FWNAME"
   curl -s -L -o "$TMPFW" "$URL"
 
@@ -119,6 +128,16 @@ flash_firmware() {
 
 mkdir -p "$DATA_DIR"
 sed -i 's/\r$//' "$0" 2>/dev/null || true
+
+# Semak dan pasang curl jika belum ada
+if ! command -v curl >/dev/null 2>&1; then
+  echo "CURL NOT FOUND. INSTALLING..."
+  opkg update && opkg install curl
+  if ! command -v curl >/dev/null 2>&1; then
+    echo "FAILED TO INSTALL curl. EXITING."
+    exit 1
+  fi
+fi
 
 auto_update_script "$@"
 get_uuid_and_token
