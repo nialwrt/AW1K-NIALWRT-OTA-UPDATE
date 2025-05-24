@@ -13,11 +13,12 @@ TMP_SCRIPT="/tmp/update.tmp"
 
 cleanup_old_scripts() {
   echo "CLEANING UP OLD OTA SCRIPTS..."
-  rm -f /usr/bin/update /usr/bin/ota_update /usr/bin/ota-updater /root/update.sh /etc/init.d/ota-updater 2>/dev/null
+  rm -f /usr/bin/ota_update /usr/bin/ota-updater /root/update.sh /etc/init.d/ota-updater 2>/dev/null
 }
 
 auto_update_script() {
-  wget -q -O "$TMP_SCRIPT" "$SCRIPT_URL"
+  TMP_VERSIONED_URL="${SCRIPT_URL}?v=$(date +%s)"
+  curl -s -L -o "$TMP_SCRIPT" "$TMP_VERSIONED_URL"
   if [ $? -eq 0 ] && ! cmp -s "$0" "$TMP_SCRIPT"; then
     echo "UPDATING SCRIPT TO LATEST VERSION..."
     cp "$TMP_SCRIPT" "$0"
@@ -151,7 +152,3 @@ get_uuid_and_token
 select_firmware
 download_firmware
 flash_firmware
-
-# Simpan salinan rasmi selepas berjaya
-cp "$0" /usr/bin/ota-update
-chmod +x /usr/bin/ota-update
