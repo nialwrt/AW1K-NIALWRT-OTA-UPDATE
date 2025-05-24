@@ -1,20 +1,10 @@
 #!/bin/sh
-
-# -------- CONFIG --------
 SERVER_URL="http://192.168.1.197"
 DATA_DIR="/etc/ota-client"
 TOKEN_FILE="$DATA_DIR/ota_token"
 TMPFW="$DATA_DIR/fwfile.bin"
-
 SCRIPT_URL="https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-OTA-UPDATE/refs/heads/main/aw1k-nialwrt-ota-update.sh"
 TMP_SCRIPT="/tmp/update.tmp"
-
-# -------- FUNCTIONS --------
-
-cleanup_old_scripts() {
-  echo "CLEANING UP OLD OTA SCRIPTS..."
-  rm -f /usr/bin/ota_update /usr/bin/ota-updater /root/update.sh /etc/init.d/ota-updater 2>/dev/null
-}
 
 auto_update_script() {
   TMP_VERSIONED_URL="${SCRIPT_URL}?v=$(date +%s)"
@@ -44,7 +34,7 @@ get_uuid_and_token() {
   echo -n "ENTER YOUR NAME TO REGISTER: "
   read -r UUID
   if [ -z "$UUID" ]; then
-    echo "UUID CANNOT BE EMPTY. EXITING."
+    echo "NAME CANNOT BE EMPTY. EXITING."
     exit 1
   fi
 
@@ -129,12 +119,9 @@ flash_firmware() {
   esac
 }
 
-# -------- MAIN --------
-
 mkdir -p "$DATA_DIR"
 sed -i 's/\r$//' "$0" 2>/dev/null || true
 
-cleanup_old_scripts
 auto_update_script "$@"
 
 if ! command -v curl >/dev/null 2>&1; then
