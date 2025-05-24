@@ -7,26 +7,22 @@ DATA_DIR="/etc/ota-client"
 TOKEN_FILE="$DATA_DIR/ota_token"
 TMPFW="$DATA_DIR/fwfile.bin"
 
-# URL skrip auto-update client OTA dari GitHub
 SCRIPT_URL="https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-OTA-UPDATE/refs/heads/main/aw1k-nialwrt-ota-update.sh"
-LOCAL_SCRIPT="/usr/bin/update"
 TMP_SCRIPT="/tmp/update.tmp"
 
 # -------- FUNCTIONS --------
 
-# Auto-update skrip OTA client jika ada versi baru di GitHub
 auto_update_script() {
   wget -q -O "$TMP_SCRIPT" "$SCRIPT_URL"
-  if [ $? -eq 0 ] && ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
+  if [ $? -eq 0 ] && ! cmp -s "$0" "$TMP_SCRIPT"; then
     echo "UPDATING SCRIPT..."
-    cp "$TMP_SCRIPT" "$LOCAL_SCRIPT"
-    chmod +x "$LOCAL_SCRIPT"
-    exec "$LOCAL_SCRIPT" "$@"
+    cp "$TMP_SCRIPT" "$0"
+    chmod +x "$0"
+    exec "$0" "$@"
     exit 0
   fi
 }
 
-# Dapatkan UUID dan Token dari fail tempatan atau register baru dengan server OTA
 get_uuid_and_token() {
   if [ -f "$TOKEN_FILE" ]; then
     UUID=$(sed -n '1p' "$TOKEN_FILE")
@@ -36,7 +32,7 @@ get_uuid_and_token() {
     fi
   fi
 
-  echo -n "ENTER YOUR DEVICE UUID TO REGISTER: "
+  echo -n "ENTER YOUR NAME TO REGISTER: "
   read -r UUID
   if [ -z "$UUID" ]; then
     echo "UUID CANNOT BE EMPTY. EXITING."
@@ -62,8 +58,8 @@ get_uuid_and_token() {
   fi
 }
 
-# Menu pilihan firmware
 select_firmware() {
+  clear
   echo "####################################"
   echo "      AW1K NIALWRT OTA UPDATE       "
   echo "####################################"
@@ -84,31 +80,32 @@ select_firmware() {
   esac
 }
 
-# Download firmware dari server OTA
 download_firmware() {
-  URL="$SERVER_URL/firmware.bin?uuid=$UUID&token=$TOKEN&file=$FWNAME"
+  echo "REMOVING OLD FIRMWARE FILE IF ANY..."
+  rm -f "$TMPFW"
 
+  URL="$SERVER_URL/firmware.bin?uuid=$UUID&token=$TOKEN&file=$FWNAME"
   echo "DOWNLOADING: $FWNAME"
   curl -s -L -o "$TMPFW" "$URL"
+
   if [ $? -ne 0 ] || [ ! -s "$TMPFW" ]; then
     echo "ERROR: FAILED TO DOWNLOAD FIRMWARE"
     rm -f "$TMPFW"
     exit 1
   fi
-  echo "DOWNLOAD COMPLETE."
 }
 
-# Tanya untuk terus flash atau tidak
 flash_firmware() {
   echo -n "FLASH NOW? (Y/N): "
   read -r CONFIRM
   case "$CONFIRM" in
     [Yy]* )
       echo "FLASHING..."
-      sysupgrade -n "$TMPFW"
+      sysupgrade -F -n "$TMPFW"
+      rm -f "$TMPFW"
       ;;
     *)
-      echo "ABORTED. NO FLASHING."
+      echo "ABORTED. NO FLASH."
       rm -f "$TMPFW"
       exit 0
       ;;
