@@ -44,7 +44,7 @@ get_token_and_name() {
   TOKEN=$(echo "$RESPONSE" | grep -o '"token":"[^"]*"' | cut -d':' -f2 | tr -d '"')
 
   if [ -z "$TOKEN" ]; then
-    echo "REGISTRATION FAILED. PLEASE CONTACT @NIALVPN"
+    echo "CONTACT @NIALVPN TO REGISTER"
     exit 1
   fi
 
