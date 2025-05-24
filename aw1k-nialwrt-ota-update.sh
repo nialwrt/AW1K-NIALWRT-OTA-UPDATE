@@ -77,7 +77,7 @@ case "$CHOICE" in
 esac
 
 URL="$SERVER_URL/firmware.bin?name=$NAME&token=$TOKEN&file=$FWNAME"
-echo "DOWNLOADING FIRMWARE...
+echo "DOWNLOADING FIRMWARE..."
 curl -L -o "$TMPFW" "$URL"
 
 if [ $? -ne 0 ] || [ ! -s "$TMPFW" ]; then
