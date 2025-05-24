@@ -1,17 +1,13 @@
 #!/bin/sh
 
-# Bersihkan tmp files lama
 rm -f /tmp/update.tmp /tmp/fwfile.bin
 
-# URL script update dari GitHub
 SCRIPT_URL_ORIGINAL="https://raw.githubusercontent.com/nialwrt/AW1K-NIALWRT-OTA-UPDATE/main/aw1k-nialwrt-ota-update.sh"
 LOCAL_SCRIPT="/usr/bin/update"
 TMP_SCRIPT="/tmp/update.tmp"
 
-# Muat turun skrip baru ke tmp
 wget -q -O "$TMP_SCRIPT" "$SCRIPT_URL_ORIGINAL"
 
-# Bandingkan dan ganti jika ada perubahan
 if [ $? -eq 0 ] && ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
   echo "Updating OTA client script..."
   cp "$TMP_SCRIPT" "$LOCAL_SCRIPT"
@@ -20,15 +16,13 @@ if [ $? -eq 0 ] && ! cmp -s "$LOCAL_SCRIPT" "$TMP_SCRIPT"; then
   exit 0
 fi
 
-# --- Mulakan fungsi utama OTA client ---
-SERVER_URL="http://192.168.1.197" # ubah IP server OTA anda
+SERVER_URL="http://192.168.1.197"
 DATA_DIR="/etc/ota-client"
 TOKEN_FILE="$DATA_DIR/ota_token"
 TMPFW="$DATA_DIR/fwfile.bin"
 
 mkdir -p "$DATA_DIR"
 
-# Buang carriage return supaya tiada error /bin/sh
 sed -i 's/\r$//' "$0" 2>/dev/null || true
 
 get_token_and_name() {
